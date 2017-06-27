@@ -12,7 +12,6 @@ from configuration import Configuration
 # The following two files are imported to let us speak to the Insteon and Philips Hue hubs. We speak to these hubs
 # using the same standard HTTP protocol that allows you to view web pages on the Internet.
 from hue import Hue
-from insteon import Insteon
 
 
 # This import will give us our wrapper for the Pocketsphinx library which we can use to get the voice commands from the 
@@ -33,9 +32,7 @@ def runMain():
 
     for device in config['devices']['hue']:
         hueDevices[device] = config['devices']['hue'][device]
-    for device in config['devices']['insteon']:
-        insteonDevices[device] = config['devices']['insteon'][device]
-    insteon = Insteon()
+        
     hue = Hue()
 
 
