@@ -1,13 +1,11 @@
 #JSGF V1.0;
 grammar commands;
 
-<action> = TURN ON	|
-	TURN OFF	;
+<action> = ON	|
+	OFF	;
 
-<object> = KITCHEN LIGHT|
-	BEDROOM LIGHT	|
-	ROOMBA		;
+<object> = KITCHEN |
+	SOFA	|
+	TABLE		;
 
-public <command> = <action> THE <object> |
-		ROOMBA CLEAN             |
-		ROOMBA GO HOME 		 ;
+public <command> = <object> <action>;

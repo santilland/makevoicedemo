@@ -14,9 +14,6 @@ from configuration import Configuration
 from hue import Hue
 from insteon import Insteon
 
-# The following file is imported so that we can send commands to our Arduino which will then be translated into 
-# IR control commands to be sent to the Roomba
-from roomba import Roomba
 
 # This import will give us our wrapper for the Pocketsphinx library which we can use to get the voice commands from the 
 # user.
@@ -41,7 +38,6 @@ def runMain():
     insteon = Insteon()
     hue = Hue()
 
-    roomba = Roomba()
 
     # Now we set up the voice recognition using Pocketsphinx from CMU Sphinx.
     pocketSphinxListener = PocketSphinxListener()
@@ -50,25 +46,16 @@ def runMain():
     while True:
         try:
             command = pocketSphinxListener.getCommand().lower()
-            command = command.replace('the', '')
-
+            
             if command.startswith('turn'):
-                onOrOff = command.split()[1]
-                deviceName = ''.join(command.split()[2:])
+                onOrOff = command.split()[2]
+                deviceName = command.split()[1]
                 if deviceName in hueDevices:
                     deviceId = hueDevices[deviceName]['deviceID']
                     hue.turn(deviceId=deviceId, onOrOff=onOrOff)
                 if deviceName in insteonDevices:
                     deviceId = insteonDevices[deviceName]['deviceID']
                     insteon.turn(deviceId=deviceId, onOrOff=onOrOff)
-                if deviceName == 'roomba':
-                    roomba.turn(onOrOff)
-            elif command.startswith('roomba'):
-                action = ' '.join(command.split()[1:])
-                if action == 'clean':
-                    roomba.clean()
-                if action == 'go home':
-                    roomba.goHome()
 
         # This will allow us to be good cooperators and sleep for a second.
         # This will give the other greenlets which we have created for talking 
